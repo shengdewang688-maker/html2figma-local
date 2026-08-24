@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        margin: 0;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        color: #1f2937;
+        background: #ffffff;
+      }
+      main {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      input {
+        height: 32px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        padding: 0 8px;
+        font-size: 12px;
+      }
+      button {
+        height: 34px;
+        border: 0;
+        border-radius: 6px;
+        background: #111827;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: wait;
+      }
+      pre {
+        margin: 0;
+        padding: 10px;
+        background: #f3f4f6;
+        border-radius: 6px;
+        white-space: pre-wrap;
+        font-size: 11px;
+        line-height: 1.4;
+        min-height: 44px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <label>
+        Session URL
+        <input id="url" value="http://localhost:4777/session/latest" />
+      </label>
+      <button id="import">Import latest session</button>
+      <pre id="status">Start the CLI first, then import.</pre>
+    </main>
+    <script>
+      const button = document.getElementById("import");
+      const input = document.getElementById("url");
+      const status = document.getElementById("status");
+
+      async function importLatestSession() {
+        button.disabled = true;
+        status.textContent = "Fetching bundle...";
+        try {
+          const response = await fetch(input.value, { cache: "no-store" });
+          if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+          const bundle = await response.json();
+          status.textContent = `Fetched ${bundle.states?.length || 0} state(s). Creating Figma nodes...`;
+          parent.postMessage({ pluginMessage: { type: "import-bundle", bundle } }, "*");
+        } catch (error) {
+          status.textContent = error && error.message ? error.message : String(error);
+          button.disabled = false;
+        }
+      }
+
+      button.addEventListener("click", importLatestSession);
+
+      window.addEventListener("load", () => {
+        status.textContent = "Auto-importing latest session...";
+        window.setTimeout(importLatestSession, 150);
+      });
+
+      window.onmessage = (event) => {
+        const message = event.data.pluginMessage;
+        if (!message) return;
+        status.textContent = message.message || JSON.stringify(message, null, 2);
+        if (message.type === "done" || message.type === "error") {
+          button.disabled = false;
+        }
+      };
+    </script>
+  </body>
+</html>

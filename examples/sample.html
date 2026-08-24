@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTML2Figma Sample</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, Arial, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #f8fafc;
+        color: #111827;
+      }
+      .shell {
+        width: 1120px;
+        margin: 0 auto;
+        padding: 40px 0;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+      }
+      .brand {
+        font-weight: 800;
+        font-size: 22px;
+      }
+      nav {
+        display: flex;
+        gap: 12px;
+      }
+      button,
+      .button {
+        border: 0;
+        border-radius: 8px;
+        background: #111827;
+        color: #ffffff;
+        height: 40px;
+        padding: 0 16px;
+        font-weight: 700;
+      }
+      .ghost {
+        background: #e5e7eb;
+        color: #111827;
+      }
+      .hero {
+        display: flex;
+        gap: 28px;
+        align-items: stretch;
+      }
+      .panel {
+        flex: 1;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #ffffff;
+        padding: 28px;
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 48px;
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+      p {
+        margin: 0 0 20px;
+        font-size: 17px;
+        line-height: 1.55;
+        color: #4b5563;
+      }
+      .stats {
+        display: flex;
+        gap: 16px;
+        margin-top: 24px;
+      }
+      .stat {
+        flex: 1;
+        border-radius: 10px;
+        background: #eef2ff;
+        padding: 16px;
+      }
+      .stat strong {
+        display: block;
+        font-size: 28px;
+      }
+      .preview {
+        width: 390px;
+        border-radius: 12px;
+        background:
+          linear-gradient(135deg, rgba(20, 184, 166, 0.2), transparent),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='420' viewBox='0 0 640 420'%3E%3Crect width='640' height='420' fill='%23111827'/%3E%3Ccircle cx='440' cy='130' r='92' fill='%2314b8a6'/%3E%3Crect x='80' y='96' width='280' height='44' rx='12' fill='%23ffffff' opacity='.9'/%3E%3Crect x='80' y='164' width='400' height='32' rx='10' fill='%23ffffff' opacity='.55'/%3E%3Crect x='80' y='220' width='340' height='32' rx='10' fill='%23ffffff' opacity='.35'/%3E%3C/svg%3E");
+        background-size: cover;
+      }
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 23, 42, 0.42);
+      }
+      .modal-backdrop.is-open {
+        display: flex;
+      }
+      .modal {
+        width: 440px;
+        border-radius: 12px;
+        background: #ffffff;
+        padding: 24px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+      }
+      .modal h2 {
+        margin: 0 0 8px;
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header>
+        <div class="brand">Editable Import</div>
+        <nav>
+          <button class="ghost">Docs</button>
+          <button data-testid="open-login">Open modal</button>
+        </nav>
+      </header>
+      <section class="hero">
+        <article class="panel">
+          <h1>Turn local HTML into editable Figma layers.</h1>
+          <p>
+            Capture visible states, preserve text nodes, keep bitmap images replaceable, and report anything
+            that needs raster fallback.
+          </p>
+          <button class="button" data-figma-capture>Capture this state</button>
+          <div class="stats">
+            <div class="stat"><strong>3</strong><span>states</span></div>
+            <div class="stat"><strong>42</strong><span>layers</span></div>
+          </div>
+        </article>
+        <aside class="preview" aria-label="Generated preview"></aside>
+      </section>
+    </main>
+    <div class="modal-backdrop" role="dialog" aria-label="Login modal">
+      <div class="modal">
+        <h2>Modal state</h2>
+        <p>This popup is generated as a separate captured state.</p>
+        <button id="close">Close</button>
+      </div>
+    </div>
+    <script>
+      const modal = document.querySelector(".modal-backdrop");
+      document.querySelector("[data-testid=open-login]").addEventListener("click", () => {
+        modal.classList.add("is-open");
+      });
+      document.getElementById("close").addEventListener("click", () => {
+        modal.classList.remove("is-open");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.html2figma*/
+*.log
+.DS_Store

@@ -1,0 +1,12 @@
+{
+  "name": "HTML2Figma Local Companion",
+  "id": "html2figma-local-companion",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": ["http://localhost:4777"],
+    "reasoning": "Fetches the latest local html2figma conversion bundle from the CLI session server."
+  }
+}

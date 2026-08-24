@@ -1,0 +1,6 @@
+@font-face {
+  font-family: Fixture;
+  src: url("/assets/fixture.otf") format("opentype");
+}
+body { background: #f5faff; font-family: Fixture, sans-serif; }
+main { padding: 32px; }

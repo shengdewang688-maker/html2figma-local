@@ -1,0 +1,38 @@
+{
+  "name": "html2figma-local",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "html2figma": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "app": "tsx src/index.ts app",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "fixture": "tsx src/index.ts convert --input examples/sample.html --config examples/html2figma.config.ts --out .html2figma-fixture --no-server",
+    "verify:plugin": "node scripts/verify-plugin-import.mjs",
+    "verify:svg-fallback": "node scripts/verify-svg-foreign-object-fallback.mjs",
+    "verify:document-bounds": "node scripts/verify-document-bounds.mjs",
+    "verify:interaction-states": "node scripts/verify-interaction-states.mjs",
+    "verify:pointer-card-states": "node scripts/verify-pointer-card-states.mjs",
+    "verify:state-store": "npm run build && node scripts/verify-state-store.mjs",
+    "verify:upload-filter": "npm run build && node scripts/verify-upload-filter.mjs",
+    "verify:live-bridge": "npm run build && node scripts/verify-live-bridge.mjs",
+    "verify:visible-sheet-capture": "npm run build && node scripts/verify-visible-sheet-capture.mjs",
+    "verify:mermaid-fallback": "npm run build && node scripts/verify-mermaid-fallback.mjs",
+    "verify:static-export-formats": "npm run build && node scripts/verify-static-export-formats.mjs",
+    "verify:app-workbench": "npm run build && node scripts/verify-app-workbench.mjs"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "mermaid": "^10.9.5",
+    "playwright": "^1.45.3",
+    "tsx": "^4.16.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "typescript": "^5.5.3"
+  }
+}

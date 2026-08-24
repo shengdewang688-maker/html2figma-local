@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Visible aria-hidden sheet fixture</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Arial, sans-serif; }
+      main { padding: 24px; }
+      .sheet {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 150;
+        align-items: flex-end;
+        background: rgba(0, 0, 0, .35);
+      }
+      .sheet.show { display: flex; }
+      .sheet-panel {
+        width: 100%;
+        padding: 24px;
+        border-radius: 16px 16px 0 0;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>认领列表</h1>
+      <button id="filterBtn" type="button" aria-label="筛选">筛选</button>
+    </main>
+    <!-- Intentionally stale: production pages often only toggle the CSS class. -->
+    <section id="filterSheet" class="sheet" aria-hidden="true">
+      <div class="sheet-panel">
+        <h2>时间筛选</h2>
+        <button type="button">全部时间</button>
+      </div>
+    </section>
+    <script>
+      document.querySelector('#filterBtn').addEventListener('click', () => {
+        document.querySelector('#filterSheet').classList.add('show');
+      });
+    </script>
+  </body>
+</html>

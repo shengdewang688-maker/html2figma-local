@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Interaction state fixture</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 32px; }
+      table { border-collapse: collapse; width: 640px; }
+      td, th { border: 1px solid #d9d9d9; padding: 12px; text-align: left; }
+      .selected { background: #e6f4ff; }
+      .actions { margin: 20px 0; }
+      [role="dialog"] { border: 1px solid #1677ff; padding: 20px; width: 420px; background: white; }
+      [hidden] { display: none; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>渠道流转</h1>
+      <p id="selection-summary">尚未选择渠道</p>
+      <div class="actions">
+        <button id="cancel" disabled>渠道注销</button>
+        <button id="reassign" disabled>渠道重新分配</button>
+      </div>
+      <table aria-label="渠道列表">
+        <thead><tr><th>选择</th><th>渠道名称</th></tr></thead>
+        <tbody>
+          <tr data-channel="A"><td><input data-figma-capture type="checkbox" name="channel" aria-label="选择渠道 A" /></td><td>渠道 A</td></tr>
+          <tr data-channel="B"><td><input data-figma-capture type="checkbox" name="channel" aria-label="选择渠道 B" /></td><td>渠道 B</td></tr>
+        </tbody>
+      </table>
+    </main>
+    <section id="cancel-dialog" role="dialog" aria-label="渠道注销确认" hidden>
+      <h2>渠道注销确认</h2><p>确认注销已选择的渠道。</p>
+    </section>
+    <section id="reassign-dialog" role="dialog" aria-label="渠道重新分配" hidden>
+      <h2>渠道重新分配</h2><p>为已选择的渠道指定新归属。</p>
+    </section>
+    <script>
+      const inputs = [...document.querySelectorAll('input[name="channel"]')];
+      const summary = document.querySelector('#selection-summary');
+      const actions = [...document.querySelectorAll('.actions button')];
+      const sync = () => {
+        const selected = inputs.find((input) => input.checked);
+        inputs.forEach((input) => input.closest('tr').classList.toggle('selected', input.checked));
+        actions.forEach((button) => button.disabled = !selected);
+        summary.textContent = selected ? `已选择：${selected.closest('tr').dataset.channel}` : '尚未选择渠道';
+      };
+      inputs.forEach((input) => input.addEventListener('change', () => {
+        if (input.checked) inputs.filter((other) => other !== input).forEach((other) => other.checked = false);
+        sync();
+      }));
+      document.querySelector('#cancel').addEventListener('click', () => document.querySelector('#cancel-dialog').hidden = false);
+      document.querySelector('#reassign').addEventListener('click', () => document.querySelector('#reassign-dialog').hidden = false);
+    </script>
+  </body>
+</html>
